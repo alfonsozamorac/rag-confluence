@@ -1,0 +1,28 @@
+# Python-related files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+
+# Virtual environment
+venv/
+env/
+__env__/
+env.bak/
+env1/
+venv1/
+*.pyc
+
+# VSCode settings
+.vscode/
+
+#Secrets
+.secrets
+
+# OS X files
+.history
+.DS_Store
+
+# Outputs
+output/
