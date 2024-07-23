@@ -6,10 +6,8 @@ from utils import *
 import requests
 import argparse
 
-driver = webdriver.Chrome()
 
-
-def login():
+def login(driver):
     url = f"{get_property("confluence")}/wiki/login.action"
     username = get_property("user")
     password = get_property("psswd")
@@ -56,7 +54,7 @@ def get_all_childs(page_id):
     return all_childs
 
 
-def getContent(page_id, parent_id=None):
+def getContent(driver, page_id, parent_id=None):
     print("Getting info from", page_id)
     driver.get(f"{get_property("confluence")}/pages/viewpage.action?pageId={page_id}")
     page_html = driver.page_source
@@ -69,12 +67,13 @@ def getContent(page_id, parent_id=None):
 
 
 def get_pages(parent):
-    login()
-    pages = get_all_childs(parent)
-    getContent(page_id=parent)
-    for page in pages:
-        getContent(page_id=page["child"], parent_id=page["parent"])
-    driver.quit()
+    with webdriver.Chrome() as driver:
+        login(driver)
+        pages = get_all_childs(parent)
+        getContent(driver=driver, page_id=parent)
+        for page in pages:
+            getContent(driver=driver, page_id=page["child"], parent_id=page["parent"])
+        driver.quit()
 
 
 def main(page_id):
